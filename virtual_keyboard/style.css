@@ -20,13 +20,14 @@
 
 .keyboard__key{
     height: 50px;
+    min-width: 2rem;
     width: 6%;
     margin: 3px;
     border-radius: 4px;
     border: none;
     background: #02fd56cc;
     color: #000000;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     cursor: pointer;
     box-shadow: 3px 3px black;
 }
@@ -48,4 +49,17 @@
 
 .keyboard__key--extra-wide{
     width: 25.4%;
+}
+
+
+@media screen and (max-width: 1000px) {
+    .keyboard__key{
+        font-size: 1rem;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .keyboard__key {
+        font-size: 0.7rem;
+    }
 }

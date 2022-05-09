@@ -16,6 +16,9 @@ const keyboard = {
 
 
     init() {
+        const textArea = document.createElement("textarea");
+        textArea.setAttribute("style","width: 60%; height: 300px; position: relative; left: 20%");
+        textArea.classList.add('use-keyboard-input');
         this.elements.main = document.createElement("div");
         this.elements.keysContainer = document.createElement("div");
 
@@ -23,8 +26,20 @@ const keyboard = {
         this.elements.keysContainer.classList.add('keyboard__keys');
         this.elements.keysContainer.appendChild(this._createKeys());
 
+
+        this.elements.keys = this.elements.keysContainer.querySelectorAll(".keyboard__key");
+
         this.elements.main.appendChild(this.elements.keysContainer);
+        document.body.appendChild(textArea);
         document.body.appendChild(this.elements.main);
+
+        document.querySelectorAll(".use-keyboard-input").forEach(element => {
+            element.addEventListener("focus", () => {
+                this.open(element.value, currentValue => {
+                    element.value = currentValue;
+                });
+            });
+        });
     },
 
     _createKeys() {
@@ -51,7 +66,7 @@ const keyboard = {
             switch (key) {
                 case "backspace":
                     keyElement.classList.add("keyboard__key--wide");
-                    keyElement.innerHTML = createIconHTML("Backspace");
+                    keyElement.innerHTML = createIconHTML("BACKSPACE");
 
                     keyElement.addEventListener("click", () => {
                         this.properties.value = this.properties.value.substring(0, this.properties.value.length - 1);
@@ -62,7 +77,7 @@ const keyboard = {
 
                 case "Tab":
                 keyElement.classList.add("keyboard__key--wide");
-                keyElement.innerHTML = createIconHTML("Tab");
+                keyElement.innerHTML = createIconHTML("TAB");
 
                 keyElement.addEventListener("click", () => {
                     this.properties.value += "    ";
@@ -84,7 +99,7 @@ const keyboard = {
 
                 case "caps":
                     keyElement.classList.add("keyboard__key--wide");
-                    keyElement.innerHTML = createIconHTML("Caps Lock");
+                    keyElement.innerHTML = createIconHTML("CAPS LOCK");
 
                     keyElement.addEventListener("click", () => {
                         this._toggleCapsLock();
@@ -95,7 +110,7 @@ const keyboard = {
 
                 case "shift":
                     keyElement.classList.add("keyboard__key--wide");
-                    keyElement.innerHTML = createIconHTML("Shift");
+                    keyElement.innerHTML = createIconHTML("SHIFT");
 
                     keyElement.addEventListener("click", () => {
                         this._toggleCapsLock();
@@ -106,7 +121,7 @@ const keyboard = {
                     
                 case "Shift":
                     keyElement.classList.add("keyboard__key--wide");
-                    keyElement.innerHTML = createIconHTML("Shift");
+                    keyElement.innerHTML = createIconHTML("SHIFT");
 
                     keyElement.addEventListener("click", () => {
                         this._toggleCapsLock();
@@ -117,7 +132,7 @@ const keyboard = {
 
                 case "enter":
                     keyElement.classList.add("keyboard__key");
-                    keyElement.innerHTML = createIconHTML("Enter");
+                    keyElement.innerHTML = createIconHTML("ENTER");
 
                     keyElement.addEventListener("click", () => {
                         this.properties.value += "\n";
@@ -128,7 +143,7 @@ const keyboard = {
 
                 case "space":
                     keyElement.classList.add("keyboard__key--extra-wide");
-                    keyElement.innerHTML = createIconHTML("Space");
+                    keyElement.innerHTML = createIconHTML("SPACE");
 
                     keyElement.addEventListener("click", () => {
                         this.properties.value += " ";
@@ -158,12 +173,24 @@ const keyboard = {
     },
 
     _triggerEvent(handlerName) {
-        console.log('event triggered' + handlerName)
+        if (typeof this.eventHandlers[handlerName] == "function") {
+            this.eventHandlers[handlerName](this.properties.value);
+        }
     },
 
     _toggleCapsLock() {
-        console.log('CapsLock toggled')
-    }
+        this.properties.capsLock = !this.properties.capsLock;
+        for (const key of this.elements.keys) {
+            if (key.childElementCount === 0) {
+                key.textContent = this.properties.capsLock ? key.textContent.toUpperCase() : key.textContent.toLowerCase();
+            }
+        }
+    },
+
+    open(initialValue, oninput) {
+        this.properties.value = initialValue || "";
+        this.eventHandlers.oninput = oninput;
+    },
 }
 
 window.addEventListener("DOMContentLoaded", function () {
