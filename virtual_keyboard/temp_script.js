@@ -1,1 +1,1 @@
-alert("task is not ready yet. Please, wait!");
+alert("task is not ready yet.\n Please, wait!");
