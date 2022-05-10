@@ -75,6 +75,10 @@ const keyboard = {
 
         let keyLayout3 = [];
 
+        if (variable == 'true') {
+            changeLanguage();
+        }
+
         if (changeLan == true) {
             changeLanguage();
         }
@@ -237,11 +241,19 @@ window.addEventListener("DOMContentLoaded", function () {
     keyboard.init_textarea();
     keyboard.init();
 })
-
+// sessionStorage.setItem('rus', 'false');
+// let changeLan = sessionStorage.getItem('rus');
 let changeLan = false;
+let variable = sessionStorage.getItem('rus');
 document.addEventListener("keydown", (event) => {
     if (event.ctrlKey && event.altKey) {
         changeLan = !changeLan;
+        sessionStorage.setItem('rus', `true`);
         keyboard.init();
+        
+        if (variable === 'true') {
+            sessionStorage.setItem('rus', `false`);
+        }
+
     }
 })
