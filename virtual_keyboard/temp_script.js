@@ -1,1 +1,0 @@
-alert("task is not ready yet.\n Please, wait!");

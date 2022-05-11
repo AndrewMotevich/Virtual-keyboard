@@ -43,6 +43,10 @@
     background: #00862dcc;
 }
 
+.active {
+    background: #00862dcc;
+}
+
 .keyboard__key--wide{
     width: 12.4%;
 }
